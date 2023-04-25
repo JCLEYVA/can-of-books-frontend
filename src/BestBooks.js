@@ -14,7 +14,7 @@ class BestBooks extends React.Component {
 
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
   componentDidMount() {
-    axios.get('/books')
+    axios.get('/Books')
       .then(res => res.json())
       .then(data => {
         if (data.length > 0) {
