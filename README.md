@@ -37,12 +37,12 @@ We will approach each other with empathy and understanding, and recognize that w
 **Time Estimates**
 For each of the lab features, make an estimate of the time it will take you to complete the feature, and record your start and finish times for that feature:
 
-Name of feature: ________________________________
+Name of feature: Update front-end React code to fetch the book list, and show it with component architecture.
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 2 hours
 
-Start time: _____
+Start time: 4:00 Pm
 
-Finish time: _____
+Finish time: 6:00 Pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 1 hr, 30 min.
