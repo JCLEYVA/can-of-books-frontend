@@ -11,7 +11,12 @@ class Header extends React.Component {
         {/* PLACEHOLDER: render a navigation link to the about page */}
 
         <NavItem><Link to="/" className="nav-link" style={{ color: 'white' }}>Best Books</Link></NavItem>
-
+        <NavItem
+          style={{ color: "white", marginLeft: "20px", cursor: "pointer" }}
+          onClick={() => this.props.setModalOpen(true)}
+        >
+          Add New Book
+        </NavItem>
       </Navbar>
     )
   }
