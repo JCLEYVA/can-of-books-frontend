@@ -1,45 +1,39 @@
-import React from 'react';
-import './AddBook';
-import Carousel from 'react-bootstrap/Carousel';
-import axios from 'axios';
-import { Router } from 'react-router-dom';
+import React from "react";
+import Carousel from "react-bootstrap/Carousel";
+import axios from "axios";
 // import { Container, Form, Button } from 'react-bootstrap'
-
 
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
-    }
+      books: [],
+      forceRefresh: props.forceRefresh,
+    };
   }
 
-  /* TODO: Make a GET request to your API to fetch all the books from the database  */
-  // Lab11
-  // componentDidMount() {
-  //   axios.get('/Books')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       if (data.length > 0) {
-  //         this.setState({ books: data });
-  //       } else {
-  //         this.setState({ books: [] });
-  //       }
-  //     })
-  //     .catch(err => console.error(err));
-  // }
-
-  // Lab12 
+  // Lab12
   componentDidMount() {
     // http://localhost:3002/books
-    let url = `${process.env.REACT_APP_SERVER}/books`;
-    axios.get(url)
-      .then(response => {
-        this.setState({ books: response.data });
+    let url = `http://localhost:3002/books`;
+    axios
+      .get(url)
+      .then((response) => {
+        const books = response.data.filter(
+          (book) => book.title !== "randomBook"
+        );
+        console.log(books);
+        this.setState({ books });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.forceRefresh) {
+      //
+    }
   }
   // *** ADDING A BOOK VIA 2 HANDLERS ****
 
@@ -52,13 +46,13 @@ class BestBooks extends React.Component {
       name: event.target.name.value,
       location: event.target.location.value,
       color: event.target.color.value,
-      spayNeuter: event.target.spayNeuter.checked
+      spayNeuter: event.target.spayNeuter.checked,
     };
 
     // console.log(catObj);
-    // TODO: SEND THIS OBJECT TO MY BACKEND - USE A 2nd HANDLER 
+    // TODO: SEND THIS OBJECT TO MY BACKEND - USE A 2nd HANDLER
     this.postBooks(booksObj);
-  }
+  };
 
   postBooks = async (booksObj) => {
     try {
@@ -70,47 +64,44 @@ class BestBooks extends React.Component {
 
       // TODO: Update state with that newly created book
       this.setState({
-        books: [...this.state.books, postBooks.data]
+        books: [...this.state.books, postBooks.data],
       });
 
       // this.getBooks()
-
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
   // *** HANDLER TO DELETE  ****
   deleteBooks = async (booksID) => {
     try {
       // TODO: Build out the url for axios -> http://localhost:3001/books/64481c6eaaa56c3a62ca80e5
 
-      let url = `${process.env.REACT_APP_SERVER}/books/${booksID}`
-      console.log('url in delete', url);
+      let url = `${process.env.REACT_APP_SERVER}/books/${booksID}`;
+      console.log("url in delete", url);
       // TODO: pass that URL into axios on a DELETE
       await axios.delete(url);
 
       // TODO: update state -> Filter out the book with the matching ID That is going to be deleted. We are going to look at each cat in state and if the id of that cat does not match the one to be deleted, it gets put into the array called updatedCats
-      let updatedBooks = this.state.books.filter(books => books._id !== booksID)
+      let updatedBooks = this.state.books.filter(
+        (books) => books._id !== booksID
+      );
 
       this.setState({
-        books: updatedBooks
-      })
-
+        books: updatedBooks,
+      });
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
 
   // componentDidMount() {
   //   this.getBooks();
   // };
 
   render() {
-
     /* TODO: render all the books in a Carousel */
-
-
 
     return (
       <>
@@ -119,18 +110,19 @@ class BestBooks extends React.Component {
         </header>
         <main>
           {this.state.books.length ? (
-            <Carousel>
-              {this.state.books.map(books => (
-                <Carousel.Item key={books._id}>
-                  <img
-                    className="d-block w-100"
-                    src={books.image_url}
-                    alt={books.title}
-                  />
+            <Carousel style={{ width: "fit-content" }}>
+              {this.state.books.map((book) => (
+                <Carousel.Item key={book._id}>
                   <Carousel.Caption>
-                    <h3>{books.title}</h3>
-                    <p>{books.description}</p>
+                    <h3>{book.title}</h3>
+                    <p>{book.description}</p>
                   </Carousel.Caption>
+                  <img
+                    className="d-block"
+                    src={book.image_url}
+                    alt={book.title}
+                    height="500"
+                  />
                 </Carousel.Item>
               ))}
             </Carousel>
@@ -159,7 +151,7 @@ class BestBooks extends React.Component {
           </Container> */}
         </main>
       </>
-    )
+    );
   }
 }
 
