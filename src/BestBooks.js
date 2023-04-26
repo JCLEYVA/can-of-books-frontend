@@ -12,21 +12,6 @@ class BestBooks extends React.Component {
     };
   }
 
-  /* TODO: Make a GET request to your API to fetch all the books from the database  */
-  // Lab11
-  // componentDidMount() {
-  //   axios.get('/Books')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       if (data.length > 0) {
-  //         this.setState({ books: data });
-  //       } else {
-  //         this.setState({ books: [] });
-  //       }
-  //     })
-  //     .catch(err => console.error(err));
-  // }
-
   // Lab12
   componentDidMount() {
     // http://localhost:3002/books
