@@ -60,5 +60,3 @@ export class BookFormModal extends Component {
     );
   }
 }
-
-
