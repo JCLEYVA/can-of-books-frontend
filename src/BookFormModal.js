@@ -9,7 +9,10 @@ export class BookFormModal extends Component {
     bookImage: "",
   };
   render() {
+    console.log('HERE', this.state.bookTitle)
+  
     return (
+      <>
       <Modal
         // {...props}
         size="lg"
@@ -56,7 +59,12 @@ export class BookFormModal extends Component {
             </Button>
           </Modal.Footer>
         </Form>
-      </Modal>
+        </Modal>
+</>
+
+
+
+     
     );
   }
 }

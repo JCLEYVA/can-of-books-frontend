@@ -17,6 +17,13 @@ class Header extends React.Component {
         >
           Add New Book
         </NavItem>
+        <NavItem
+          style={{ color: "white", marginLeft: "20px", cursor: "pointer" }}
+          onClick={() => this.props.setModalOpen(true)}
+        >
+          Delete New Book
+        </NavItem>
+
       </Navbar>
     )
   }
