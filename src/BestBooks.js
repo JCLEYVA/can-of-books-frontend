@@ -1,7 +1,8 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
 import axios from "axios";
-// import { Container, Form, Button } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button';
+import UpdateBookForm from './UpdateBookForm';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -9,13 +10,13 @@ class BestBooks extends React.Component {
     this.state = {
       books: [],
       forceRefresh: props.forceRefresh,
+      showForm: false,
+      selectBook: {}
     };
   }
 
-  // Lab12
   componentDidMount() {
-    // http://localhost:3002/books
-    let url = `http://localhost:3002/books`;
+    let url = `${process.env.REACT_APP_SERVER}/books`;
     axios
       .get(url)
       .then((response) => {
@@ -35,13 +36,10 @@ class BestBooks extends React.Component {
       //
     }
   }
-  // *** ADDING A BOOK VIA 2 HANDLERS ****
 
-  // *** 1ST HANDLER - GRAB FORM DATA AND BUILD OUT A CT OBJECT  - RUN ON FORM SUBMISSION***
   handleBooksSubmit = (event) => {
     event.preventDefault();
 
-    // TODO: CONSTRUCT A book OBJ BASED ON THE FORM INPUT VALUES
     let booksObj = {
       name: event.target.name.value,
       location: event.target.location.value,
@@ -49,20 +47,15 @@ class BestBooks extends React.Component {
       spayNeuter: event.target.spayNeuter.checked,
     };
 
-    // console.log(catObj);
-    // TODO: SEND THIS OBJECT TO MY BACKEND - USE A 2nd HANDLER
     this.postBooks(booksObj);
   };
 
   postBooks = async (booksObj) => {
     try {
-      // TODO: build my url for axios -> http://localhost:3001/cats
       let url = `${process.env.REACT_APP_SERVER}/books`;
 
-      // TODO: pass the url and the cat data into axios on a POST and store that return in a variable
       let postBooks = await axios.post(url, booksObj);
 
-      // TODO: Update state with that newly created book
       this.setState({
         books: [...this.state.books, postBooks.data],
       });
@@ -73,19 +66,15 @@ class BestBooks extends React.Component {
     }
   };
 
-  // *** HANDLER TO DELETE  ****
-  deleteBooks = async (booksID) => {
+  deleteBook = async (booksId) => {
     try {
-      // TODO: Build out the url for axios -> http://localhost:3001/books/64481c6eaaa56c3a62ca80e5
-
-      let url = `${process.env.REACT_APP_SERVER}/books/${booksID}`;
+      let url = `${process.env.REACT_APP_SERVER}/books/${booksId}`;
       console.log("url in delete", url);
-      // TODO: pass that URL into axios on a DELETE
+
       await axios.delete(url);
 
-      // TODO: update state -> Filter out the book with the matching ID That is going to be deleted. We are going to look at each cat in state and if the id of that cat does not match the one to be deleted, it gets put into the array called updatedCats
       let updatedBooks = this.state.books.filter(
-        (books) => books._id !== booksID
+        (books) => books._id !== booksId
       );
 
       this.setState({
@@ -96,12 +85,20 @@ class BestBooks extends React.Component {
     }
   };
 
-  // componentDidMount() {
-  //   this.getBooks();
-  // };
+  handleOpenForm = () =>{
+    this.setState({
+      showForm: true
+    })
+  }
+
+  selectABookToUpdate =(book) => {
+    this.handleOpenForm()
+    this.setState({
+      selectBook: book
+    })
+  }
 
   render() {
-    /* TODO: render all the books in a Carousel */
 
     return (
       <>
@@ -113,13 +110,33 @@ class BestBooks extends React.Component {
             <Carousel style={{ width: "fit-content" }}>
               {this.state.books.map((book) => (
                 <Carousel.Item key={book._id}>
+                 {this.state.showForm &&
+                 <UpdateBookForm />}
+
                   <Carousel.Caption>
                     <h3>{book.title}</h3>
                     <p>{book.description}</p>
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      onClick={() => this.deleteBook(book._id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      onClick={() => this.selectABookToUpdate(book)}
+                    >
+                     Update
+                    </Button>
+                    <Button onClick={() => this.props.setModalOpen(false)}>
+                      Close
+                    </Button>
                   </Carousel.Caption>
                   <img
                     className="d-block"
-                    src={book.image_url}
+                    src={'https://www.pluggedin.com/wp-content/uploads/2020/01/placeholder_book.jpg'}
                     alt={book.title}
                     height="500"
                   />
@@ -129,30 +146,17 @@ class BestBooks extends React.Component {
           ) : (
             <h3>No Books Found :(</h3>
           )}
-          {/* <Container className="mt-5">
-            <Form onSubmit={this.handleBooksSubmit}>
-              <Form.Group controlId="name">
-                <Form.Label>title</Form.Label>
-                <Form.Control type="text" />
-              </Form.Group>
-              <Form.Group controlId="color">
-                <Form.Label>Description</Form.Label>
-                <Form.Control type="text" />
-              </Form.Group>
-              <Form.Group controlId="location">
-                <Form.Label>Status</Form.Label>
-                <Form.Control type="text" />
-              </Form.Group>
-              <Form.Group controlId="spayNeuter">
-                <Form.Check type="checkbox" label="spay-neuter" />
-              </Form.Group>
-              <Button type="submit">Add Books</Button>
-            </Form>
-          </Container> */}
-        </main>
+
+          {/* <Button onClick={this.handleOpenForm}>Edit Book Details</Button> */}
+          {this.state.showForm &&
+            <UpdateBookForm selectBook={this.state.selectBook}/>
+          }
+          
+        </main> 
       </>
     );
-  }
-}
+        }
+      }
 
 export default BestBooks;
+      

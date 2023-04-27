@@ -15,6 +15,26 @@ Finish time: 6:00 Pm
 
 Actual time needed to complete: 1 hr, 30 min.
 
+Name of feature: CRUD
+
+Estimate of time needed to complete: 
+
+Start time: 
+
+Finish time: 
+
+Actual time needed to complete: 
+
+Name of feature: Update of CRUD
+
+Estimate of time needed to complete: _____
+
+Start time: _____
+
+Finish time: _____
+
+Actual time needed to complete: _____
+
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
